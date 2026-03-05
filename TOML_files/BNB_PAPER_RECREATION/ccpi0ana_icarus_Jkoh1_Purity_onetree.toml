@@ -1,0 +1,66 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/ccpi0ana_icarus_Jkoh1_Purity_onetree"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+recopi0thresh = [
+    "@photon_threshold",
+    "@leading_photon_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 0.0
+muon_threshold = 143.425
+pi0_threshold = 0.0
+pion_threshold = 25.0
+proton_threshold = 0.0
+leading_photon_threshold = 25.0
+pi0_mass_veto_low = 60.0
+pi0_mass_veto_high = 300.0
+flash_low_t = -0.5
+flash_high_t = 1.6
+bnb_fom2_cut = 0.98
+
+[[sample]]
+name = "BNB_SIMULATION"
+path = "/pnfs/icarus/persistent/users/mueller/production/simulation/nominal/input*.flat.root"
+ismc = true
+disable = false
+
+
+[[tree]]
+name = "all_interactions"
+sim_only = false
+add_exposure = true
+mode = "reco"
+cut = [
+    {name = "no_cut",          type = "reco" },
+]
+branch = [
+    #Reco selected cuts 
+    {name = "fiducial_cut", type = "reco"},
+    {name = "avoid_mystery_zgap", type = "reco"},
+    {name = "flash_cut", type = "reco",  parameters = ["@flash_low_t", "@flash_high_t"]},
+    {name = "single_muon", type = "reco", parameters = ["@muon_threshold"]},
+    {name = "no_charged_pions", type = "reco", parameters = ["@pion_threshold"]},
+    {name = "two_photons", type = "reco", parameters = ["@photon_threshold"]},
+    {name = "valid_pi0_mass_cut", type = "reco", parameters = ["@pi0_mass_veto_low", "@pi0_mass_veto_high"]},
+    {name = "neutrino", type = "true"},
+    #True signal selected cuts 
+    {name = "isnumu", type = "true"},
+    {name = "fiducial_cut", type = "true"},
+    {name = "avoid_mystery_zgap", type = "true"},
+    {name = "iscc", type = "true"},
+    {name = "single_muon", type = "true", parameters = ["@muon_threshold"]},
+    {name = "no_charged_pions", type = "true", parameters = ["@pion_threshold"]},
+    {name = "single_pi0", type = "true", parameters = ["@pi0_threshold"]},
+]

@@ -1,0 +1,552 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/1u1p_and_seperate_particles"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 25.0
+muon_threshold = 143.425
+pion_threshold = 25.0
+proton_threshold = 50.0
+
+[[category]] # 0 : Neutrino, charged current
+cuts = [
+    { name = "neutrino" },
+    { name = "iscc"     },
+]
+
+[[category]] # 1 : Neutrino, neutral current
+cuts = [
+    { name = "neutrino" },
+    { name = "!iscc"    },
+]
+
+[[category]] # 2 : Cosmic
+cuts = [
+    { name = "!neutrino" },
+]
+
+[[sample]]
+name = "simulation"
+path = "/exp/icarus/data/users/jkoh1/NuMI_CV_flat_cafs_2_00.root"
+ismc = true
+
+[[tree]] # 1u1p purity
+name = "1u1p_selected"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",     type = "reco" },
+    { name = "containment_cut",  type = "reco" },
+    { name = "valid_flashmatch", type = "reco" },
+    { name = "no_photons",       type = "reco", parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",     type = "reco", parameters = [ "@electron_threshold" ] },
+    { name = "no_charged_pions", type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",      type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "single_proton",    type = "reco", parameters = [ "@proton_threshold"   ] },
+]
+branch = [
+    { name = "neutrino_id",      type = "true"},
+    { name = "baseline",         type = "mctruth"},
+    { name = "cc",               type = "mctruth"},
+    { name = "pdg",              type = "mctruth"},
+    { name = "interaction_type", type = "mctruth"},
+    { name = "category",         type = "true"},
+    { name = "neutrino_energy",  type = "mctruth"},
+    { name = "visible_energy",   type = "both"},
+    { name = "dpT",              type = "both"},
+    { name = "flash_time",       type = "reco"}
+]
+
+[[tree]] # 1u1p efficiency
+name = "1u1p_signal"
+sim_only = true
+mode = "true"
+cut = [
+    { name = "neutrino",         type = "true" },
+    { name = "fiducial_cut",     type = "true" },
+    { name = "containment_cut",  type = "true" },
+    { name = "no_photons",       type = "true", parameters = [ "@photon_threshold"   ] },
+    { name = "no_electrons",     type = "true", parameters = [ "@electron_threshold" ] },
+    { name = "no_charged_pions", type = "true", parameters = [ "@pion_threshold"     ] },
+    { name = "single_muon",      type = "true", parameters = [ "@muon_threshold"     ] },
+    { name = "single_proton",    type = "true", parameters = [ "@proton_threshold"   ] },
+]
+branch = [
+    {name = "neutrino_id",           type = "true"},
+    {name = "category",              type = "true"},
+    {name = "visible_energy",        type = "both"},
+    {name = "fiducial",              type = "reco"},
+    {name = "containment",           type = "reco"},
+    {name = "flash_time",            type = "reco"},
+    {name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "reco", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "reco", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "reco", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "reco", parameters = [ "@proton_threshold"   ]},
+    
+]
+
+[[tree]] # photon efficiency
+name = "Photon"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino",         type = "true" },
+    {name = "is_pid", type = "true_particle", parameters = [0,]},
+    {name = "fiducial_cut",     type = "true" },
+    {name = "containment_cut",  type = "true" },
+]
+branch = [
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "end_x", type = "both_particle"},
+    {name = "end_y", type = "both_particle"},
+    {name = "end_z", type = "both_particle"},
+    {name = "end_dir_x", type = "both_particle"},
+    {name = "end_dir_y", type = "both_particle"},
+    {name = "end_dir_z", type = "both_particle"},
+    {name = "polar_angle", type = "both_particle"},
+    {name = "azimuthal_angle", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "theta_xw_horizontal", type = "both_particle"},
+    {name = "theta_xw_p60", type = "both_particle"},
+    {name = "theta_xw_m60", type = "both_particle"},
+    {name = "theta_xw_vertical", type = "both_particle"},
+    {name = "theta_xw_p30", type = "both_particle"},
+    {name = "theta_xw_m30", type = "both_particle"},
+]
+
+[[tree]] # electron efficiency
+name = "Electron"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino",         type = "true" },
+    {name = "is_pid", type = "true_particle", parameters = [1,]},
+    {name = "fiducial_cut",     type = "true" },
+    {name = "containment_cut",  type = "true" },
+]
+branch = [
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "end_x", type = "both_particle"},
+    {name = "end_y", type = "both_particle"},
+    {name = "end_z", type = "both_particle"},
+    {name = "end_dir_x", type = "both_particle"},
+    {name = "end_dir_y", type = "both_particle"},
+    {name = "end_dir_z", type = "both_particle"},
+    {name = "polar_angle", type = "both_particle"},
+    {name = "azimuthal_angle", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "theta_xw_horizontal", type = "both_particle"},
+    {name = "theta_xw_p60", type = "both_particle"},
+    {name = "theta_xw_m60", type = "both_particle"},
+    {name = "theta_xw_vertical", type = "both_particle"},
+    {name = "theta_xw_p30", type = "both_particle"},
+    {name = "theta_xw_m30", type = "both_particle"},
+]
+
+[[tree]] # muon efficiency
+name = "muons"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino",         type = "true" },
+    {name = "is_pid", type = "true_particle", parameters = [2,]},
+    {name = "fiducial_cut",     type = "true" },
+    {name = "containment_cut",  type = "true" },
+]
+branch = [
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "end_x", type = "both_particle"},
+    {name = "end_y", type = "both_particle"},
+    {name = "end_z", type = "both_particle"},
+    {name = "end_dir_x", type = "both_particle"},
+    {name = "end_dir_y", type = "both_particle"},
+    {name = "end_dir_z", type = "both_particle"},
+    {name = "polar_angle", type = "both_particle"},
+    {name = "azimuthal_angle", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "theta_xw_horizontal", type = "both_particle"},
+    {name = "theta_xw_p60", type = "both_particle"},
+    {name = "theta_xw_m60", type = "both_particle"},
+    {name = "theta_xw_vertical", type = "both_particle"},
+    {name = "theta_xw_p30", type = "both_particle"},
+    {name = "theta_xw_m30", type = "both_particle"},
+]
+
+[[tree]] # pion efficiency
+name = "Pion"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino",         type = "true" },
+    {name = "is_pid", type = "true_particle", parameters = [3,]},
+    {name = "fiducial_cut",     type = "true" },
+    {name = "containment_cut",  type = "true" },
+]
+branch = [
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "end_x", type = "both_particle"},
+    {name = "end_y", type = "both_particle"},
+    {name = "end_z", type = "both_particle"},
+    {name = "end_dir_x", type = "both_particle"},
+    {name = "end_dir_y", type = "both_particle"},
+    {name = "end_dir_z", type = "both_particle"},
+    {name = "polar_angle", type = "both_particle"},
+    {name = "azimuthal_angle", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "theta_xw_horizontal", type = "both_particle"},
+    {name = "theta_xw_p60", type = "both_particle"},
+    {name = "theta_xw_m60", type = "both_particle"},
+    {name = "theta_xw_vertical", type = "both_particle"},
+    {name = "theta_xw_p30", type = "both_particle"},
+    {name = "theta_xw_m30", type = "both_particle"},
+]
+
+[[tree]] # proton efficiency
+name = "protons with reco valid_flashmatch"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino",         type = "true" },
+    {name = "is_pid", type = "true_particle", parameters = [4,]},
+    {name = "valid_flashmatch", type = "reco"},
+    {name = "fiducial_cut",     type = "true" },
+    {name = "containment_cut",  type = "true" },
+]
+branch = [
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "end_x", type = "both_particle"},
+    {name = "end_y", type = "both_particle"},
+    {name = "end_z", type = "both_particle"},
+    {name = "end_dir_x", type = "both_particle"},
+    {name = "end_dir_y", type = "both_particle"},
+    {name = "end_dir_z", type = "both_particle"},
+    {name = "polar_angle", type = "both_particle"},
+    {name = "azimuthal_angle", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "theta_xw_horizontal", type = "both_particle"},
+    {name = "theta_xw_p60", type = "both_particle"},
+    {name = "theta_xw_m60", type = "both_particle"},
+    {name = "theta_xw_vertical", type = "both_particle"},
+    {name = "theta_xw_p30", type = "both_particle"},
+    {name = "theta_xw_m30", type = "both_particle"},
+]
+
+[[tree]] # proton efficiency
+name = "protons without reco valid_flashmatch"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino",         type = "true" },
+    {name = "is_pid", type = "true_particle", parameters = [4,]},
+    {name = "fiducial_cut",     type = "true" },
+    {name = "containment_cut",  type = "true" },
+]
+branch = [
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "end_x", type = "both_particle"},
+    {name = "end_y", type = "both_particle"},
+    {name = "end_z", type = "both_particle"},
+    {name = "end_dir_x", type = "both_particle"},
+    {name = "end_dir_y", type = "both_particle"},
+    {name = "end_dir_z", type = "both_particle"},
+    {name = "polar_angle", type = "both_particle"},
+    {name = "azimuthal_angle", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "theta_xw_horizontal", type = "both_particle"},
+    {name = "theta_xw_p60", type = "both_particle"},
+    {name = "theta_xw_m60", type = "both_particle"},
+    {name = "theta_xw_vertical", type = "both_particle"},
+    {name = "theta_xw_p30", type = "both_particle"},
+    {name = "theta_xw_m30", type = "both_particle"},
+]
+
+[[tree]] # proton efficiency
+name = "protons without reco valid_flashmatch and with containment_cut true_particle "
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino",         type = "true" },
+    {name = "is_pid", type = "true_particle", parameters = [4,]},
+    {name = "fiducial_cut",     type = "true" },
+    {name = "containment_cut",  type = "true_particle" },
+]
+branch = [
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "end_x", type = "both_particle"},
+    {name = "end_y", type = "both_particle"},
+    {name = "end_z", type = "both_particle"},
+    {name = "end_dir_x", type = "both_particle"},
+    {name = "end_dir_y", type = "both_particle"},
+    {name = "end_dir_z", type = "both_particle"},
+    {name = "polar_angle", type = "both_particle"},
+    {name = "azimuthal_angle", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "theta_xw_horizontal", type = "both_particle"},
+    {name = "theta_xw_p60", type = "both_particle"},
+    {name = "theta_xw_m60", type = "both_particle"},
+    {name = "theta_xw_vertical", type = "both_particle"},
+    {name = "theta_xw_p30", type = "both_particle"},
+    {name = "theta_xw_m30", type = "both_particle"},
+]
+
+[[tree]]
+name = "PID_efficiency"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino", type = "true"},
+    {name = "containment_cut", type = "true"},
+    {name = "fiducial_cut", type = "true"},
+]
+branch = [
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "end_x", type = "both_particle"},
+    {name = "end_y", type = "both_particle"},
+    {name = "end_z", type = "both_particle"},
+    {name = "end_dir_x", type = "both_particle"},
+    {name = "end_dir_y", type = "both_particle"},
+    {name = "end_dir_z", type = "both_particle"},
+    {name = "polar_angle", type = "both_particle"},
+    {name = "azimuthal_angle", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "theta_xw_horizontal", type = "both_particle"},
+    {name = "theta_xw_p60", type = "both_particle"},
+    {name = "theta_xw_m60", type = "both_particle"},
+    {name = "theta_xw_vertical", type = "both_particle"},
+    {name = "theta_xw_p30", type = "both_particle"},
+    {name = "theta_xw_m30", type = "both_particle"},
+]
+
+[[tree]] # all interactions efficiency
+name = "interactions"
+sim_only = false
+mode = "true"
+cut = [
+    {name = "neutrino", type = "true"},
+    {name = "fiducial_cut", type = "true"},
+    {name = "containment_cut", type = "true"},
+]
+branch = [
+    {name = "iou", type = "both"},
+    {name = "vertex_x", type = "both"},
+    {name = "vertex_y", type = "both"},
+    {name = "vertex_z", type = "both"},
+    {name = "fiducial", type = "reco"},
+    {name = "containment", type = "reco"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "flash_hypothesis", type = "reco"},
+    {name = "visible_energy", type = "both"},
+    {name = "neutrino_energy", type = "mctruth"},
+    {name = "pdg", type = "mctruth"},
+    {name = "cc", type = "mctruth"},
+    {name = "interaction_mode", type = "mctruth"},
+]
+
+[[tree]] # event level data
+name = "events"
+sim_only = false
+mode = "event"
+cut = [
+    {name = "no_cut", type = "event"},
+]
+branch = [
+    {name = "nnu", type = "event"},
+    {name = "nintime", type = "event", parameters = [0.0, 1.6]},
+]
+
+[[tree]] # michel purity
+name = "michel"
+sim_only = false
+mode = "reco"
+cut = [
+    {name = "!valid_flashmatch", type = "reco"},
+    {name = "single_michel", type = "reco"},
+    {name = "containment_cut", type = "reco_particle"},
+    {name = "is_semantic_type", type = "reco_particle", parameters = [2,]},
+    {name = "size_cut", type = "reco_particle", parameters = [20,]},
+]
+branch = [
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "ke", type = "both_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+]
+
+[[tree]] # shower purity
+name = "shower"
+sim_only = false
+mode = "reco"
+cut = [
+    {name = "containment_cut", type = "reco_particle"},
+    {name = "is_semantic_type", type = "reco_particle", parameters = [0,]},
+    {name = "size_cut", type = "reco_particle", parameters = [20,]},
+]
+branch = [
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "ke", type = "both_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+]

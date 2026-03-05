@@ -1,0 +1,315 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/All_NuMI_BNB_preselection_cosmics_analysis"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 25.0
+muon_threshold = 143.425
+pion_threshold = 25.0
+proton_threshold = 50.0
+NuMIflash_low_t =  0.0 # µs
+NuMIflash_high_t = 9.6 # µs
+BNBflash_low_t =  0.0 # µs
+BNBflash_high_t = 1.6 # µs
+
+#NuMI Samples
+
+[[sample]]
+name = "NuMI_simulation"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root"
+ismc = true
+disable = false
+
+#BNB samples
+
+[[sample]]
+name = "BNB_simulation"
+path = "/pnfs/icarus/persistent/users/mueller/production/simulation/nominal/input*.flat.root"
+ismc = true
+disable = false
+
+#reconstructed mode-----------------------------------------------------------------------------
+
+[[tree]] # preselection
+name = "NuMI_fiducial_flashcut_cut_reco"
+sim_only = false
+mode = "reco"
+cut = [
+    {name = "fiducial_cut",         type = "reco" },
+    {name = "flash_cut",       type = "reco", parameters = [ "@NuMIflash_low_t", "@NuMIflash_high_t" ] },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "flash_cut",       type = "both", parameters = [ "@NuMIflash_low_t", "@NuMIflash_high_t" ] },
+    {name = "visible_energy", type = "both"},
+    {name = "fiducial", type = "both"},
+    {name = "containment", type = "both"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "dpT", type = "both"},
+]
+
+[[tree]] # preselection
+name = "BNB_fiducial_flashcut_cut_reco"
+sim_only = false
+mode = "reco"
+cut = [
+    {name = "fiducial_cut",         type = "reco" },
+    {name = "flash_cut",       type = "reco", parameters = [ "@BNBflash_low_t", "@BNBflash_high_t" ] },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "flash_cut",       type = "both", parameters = [ "@BNBflash_low_t", "@BNBflash_high_t" ] },
+    {name = "visible_energy", type = "both"},
+    {name = "fiducial", type = "both"},
+    {name = "containment", type = "both"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "dpT", type = "both"},
+]
+
+[[tree]] # preselection
+name = "NuMI_fiducial_invertedflashcut_cut_reco"
+sim_only = false
+mode = "reco"
+cut = [
+    {name = "fiducial_cut",         type = "reco" },
+    {name = "!flash_cut",       type = "reco", parameters = [ "@NuMIflash_low_t", "@NuMIflash_high_t" ] },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "flash_cut",       type = "both", parameters = [ "@NuMIflash_low_t", "@NuMIflash_high_t" ] },
+    {name = "visible_energy", type = "both"},
+    {name = "fiducial", type = "both"},
+    {name = "containment", type = "both"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "dpT", type = "both"},
+]
+
+[[tree]] # preselection
+name = "BNB_fiducial_invertedflashcut_cut_reco"
+sim_only = false
+mode = "reco"
+cut = [
+    {name = "fiducial_cut",         type = "reco" },
+    {name = "!flash_cut",       type = "reco", parameters = [ "@BNBflash_low_t", "@BNBflash_high_t" ] },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "flash_cut",       type = "both", parameters = [ "@BNBflash_low_t", "@BNBflash_high_t" ] },
+    {name = "visible_energy", type = "both"},
+    {name = "fiducial", type = "both"},
+    {name = "containment", type = "both"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "dpT", type = "both"},
+]
+
+[[tree]] # reco no cuts
+name = "reco_nocut"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "no_cut",          type = "reco" },
+]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    { name = "cc",               type = "mctruth" },
+    { name = "pdg",              type = "mctruth" },
+    { name = "interaction_mode", type = "mctruth" },
+    { name = "interaction_type", type = "mctruth" },
+    { name = "neutrino_energy",  type = "mctruth" },
+    { name = "neutrino_id",   type = "true" },
+]
+
+#true mode-----------------------------------------------------------------------------
+
+
+[[tree]] # preselection
+name = "NuMI_fiducial_flashcut_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "fiducial_cut",         type = "true" },
+    {name = "flash_cut",       type = "true", parameters = [ "@NuMIflash_low_t", "@NuMIflash_high_t" ] },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "flash_cut",       type = "both", parameters = [ "@NuMIflash_low_t", "@NuMIflash_high_t" ] },
+    {name = "visible_energy", type = "both"},
+    {name = "fiducial", type = "both"},
+    {name = "containment", type = "both"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "dpT", type = "both"},
+]
+
+[[tree]] # preselection
+name = "BNB_fiducial_flashcut_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "fiducial_cut",         type = "true" },
+    {name = "flash_cut",       type = "true", parameters = [ "@BNBflash_low_t", "@BNBflash_high_t" ] },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "flash_cut",       type = "both", parameters = [ "@BNBflash_low_t", "@BNBflash_high_t" ] },
+    {name = "visible_energy", type = "both"},
+    {name = "fiducial", type = "both"},
+    {name = "containment", type = "both"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "dpT", type = "both"},
+]
+
+[[tree]] # preselection
+name = "NuMI_fiducial_invertedflashcut_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "fiducial_cut",         type = "true" },
+    {name = "!flash_cut",       type = "true", parameters = [ "@NuMIflash_low_t", "@NuMIflash_high_t" ] },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "flash_cut",       type = "both", parameters = [ "@NuMIflash_low_t", "@NuMIflash_high_t" ] },
+    {name = "visible_energy", type = "both"},
+    {name = "fiducial", type = "both"},
+    {name = "containment", type = "both"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "dpT", type = "both"},
+]
+
+[[tree]] # preselection
+name = "BNB_fiducial_invertedflashcut_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "fiducial_cut",         type = "true" },
+    {name = "!flash_cut",       type = "true", parameters = [ "@BNBflash_low_t", "@BNBflash_high_t" ] },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "flash_cut",       type = "true", parameters = [ "@BNBflash_low_t", "@BNBflash_high_t" ] },
+    {name = "visible_energy", type = "both"},
+    {name = "fiducial", type = "both"},
+    {name = "containment", type = "both"},
+    {name = "flash_time", type = "reco"},
+    {name = "flash_total_pe", type = "reco"},
+    {name = "dpT", type = "both"},
+]
+
+[[tree]] # true no cuts
+name = "true_nocut"
+sim_only = true
+mode = "true"
+cut = [
+    { name = "no_cut",          type = "true" },
+]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    { name = "cc",               type = "mctruth" },
+    { name = "pdg",              type = "mctruth" },
+    { name = "interaction_mode", type = "mctruth" },
+    { name = "interaction_type", type = "mctruth" },
+    { name = "neutrino_energy",  type = "mctruth" },
+    { name = "neutrino_id",   type = "true" },
+]

@@ -1,0 +1,185 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/All_NuMI_BNB_2_shower_event_preselection_PID_analysis_true"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 25.0
+muon_threshold = 143.425
+pion_threshold = 25.0
+proton_threshold = 50.0
+
+#NuMI Samples
+
+[[sample]]
+name = "NuMI_simulation"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root"
+ismc = true
+disable = false
+
+#BNB samples
+
+[[sample]]
+name = "BNB_simulation"
+path = "/pnfs/icarus/persistent/users/mueller/production/simulation/nominal/input*.flat.root"
+ismc = true
+disable = false
+
+#pre-selection with PID cuts---------------------------------------------------------------------------------------
+
+#true mode -----------------------------------------------------------------------------
+
+[[tree]] # photon preselection
+name = "particle_photon_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [0,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "is_pid", type = "both_particle", parameters = [0,]},
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+]
+
+[[tree]] # electron preselection
+name = "particle_electron_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [1,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "is_pid", type = "both_particle", parameters = [1,]},
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+]
+
+[[tree]] # muon preselection
+name = "particle_muon_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [2,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "is_pid", type = "both_particle", parameters = [2,]},
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+]
+
+[[tree]] # pion preselection
+name = "particle_pion_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [3,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "is_pid", type = "both_particle", parameters = [3,]},
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+]
+
+[[tree]] # proton preselection
+name = "particle_proton_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [4,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "is_pid", type = "both_particle", parameters = [4,]},
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+]

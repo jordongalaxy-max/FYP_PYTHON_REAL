@@ -1,0 +1,148 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/All_NuMI_BNB_2_shower_event_preselection_PID_interaction_true"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 25.0
+muon_threshold = 143.425
+pion_threshold = 25.0
+proton_threshold = 50.0
+
+#NuMI Samples
+
+[[sample]]
+name = "NuMI_simulation"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root"
+ismc = true
+disable = false
+
+#BNB samples
+
+[[sample]]
+name = "BNB_simulation"
+path = "/pnfs/icarus/persistent/users/mueller/production/simulation/nominal/input*.flat.root"
+ismc = true
+disable = false
+
+#pre-selection with PID cuts---------------------------------------------------------------------------------------
+
+#true mode -----------------------------------------------------------------------------
+
+[[tree]] # photon preselection
+name = "particle_photon_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [0,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "neutrino",              type = "true"    },
+]
+
+[[tree]] # electron preselection
+name = "particle_electron_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [1,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "neutrino",              type = "true"    },
+]
+
+[[tree]] # muon preselection
+name = "particle_muon_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [2,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "neutrino",              type = "true"    },
+]
+
+[[tree]] # pion preselection
+name = "particle_pion_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [3,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "neutrino",              type = "true"    },
+]
+
+[[tree]] # proton preselection
+name = "particle_proton_fiducial_flashmatch_containment_cut_true"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "is_pid", type = "true_particle", parameters = [4,]},
+    {name = "fiducial_cut",         type = "true" },
+    {name = "containment_cut",      type = "true" },
+    {name = "neutrino",             type = "true" },
+]
+branch = [
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    {name = "neutrino",              type = "true"    },
+]

@@ -1,0 +1,515 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/2_shower_event_preselection_and_selection"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 25.0
+muon_threshold = 143.425
+pion_threshold = 25.0
+proton_threshold = 50.0
+
+[[category]] # 0 : Neutrino, charged current
+cuts = [
+    { name = "neutrino" },
+    { name = "iscc"     },
+]
+
+[[category]] # 1 : Neutrino, neutral current
+cuts = [
+    { name = "neutrino" },
+    { name = "!iscc"    },
+]
+
+[[category]] # 2 : Cosmic
+cuts = [
+    { name = "!neutrino" },
+]
+
+#NuMI Samples
+
+[[sample]]
+name = "NuMI_simulation_0"
+path = "/exp/icarus/data/users/jkoh1/NuMI_CV_flat_cafs_2_00.root"
+ismc = true
+disable = false
+
+[[sample]]
+name = "NuMI_simulation_1"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/NuMI_CV_flat_cafs_2_01.root"
+ismc = true
+disable = false
+
+#BNB samples
+
+[[sample]]
+name = "BNB_simulation_0"
+path = "/pnfs/icarus/persistent/users/mueller/production/simulation/nominal/input000.flat.root"
+ismc = true
+disable = false
+
+[[sample]]
+name = "BNB_simulation_1"
+path = "/pnfs/icarus/persistent/users/mueller/production/simulation/nominal/input001.flat.root"
+ismc = true
+disable = false
+
+#pre-selection cuts---------------------------------------------------------------------------------------
+
+[[tree]] # ee reco  
+name = "ee_shower_selected_preselection"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",          type = "reco" },
+    { name = "containment_cut",       type = "reco" },
+    { name = "valid_flashmatch",      type = "reco" },]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "reco", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "reco", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "reco", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "reco", parameters = [ "@proton_threshold"   ]},
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+]
+
+
+[[tree]] # yy reco
+name = "yy_shower_selected_preselection"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",          type = "reco" },
+    { name = "containment_cut",       type = "reco" },
+    { name = "valid_flashmatch",      type = "reco" },]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "reco", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "reco", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "reco", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "reco", parameters = [ "@proton_threshold"   ]},
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+]
+
+[[tree]] # ey reco
+name = "ey_shower_selected_preselection"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",          type = "reco" },
+    { name = "containment_cut",       type = "reco" },
+    { name = "valid_flashmatch",      type = "reco" },]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "reco", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "reco", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "reco", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "reco", parameters = [ "@proton_threshold"   ]},
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+]
+
+#interaction level variables------------------------------------------------------------------------------
+
+[[tree]] # ee reco  
+name = "ee_shower_selected_interaction"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",          type = "reco" },
+    { name = "containment_cut",       type = "reco" },
+    { name = "valid_flashmatch",      type = "reco" },
+    { name = "no_charged_pions",      type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "no_photons",            type = "reco", parameters = [ "@photon_threshold"   ] },
+    { name = "no_muons",              type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "no_protons",            type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "two_electrons",         type = "reco", parameters = [ "@electron_threshold" ] }, #new cut that i created by modifying single_electron cut to choose 2 instead of 1 
+]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "photon_multiplicity",   type = "reco", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "reco", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "reco", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "reco", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "reco", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "reco"    },
+    {name = "containment_cut",       type = "reco"    },
+    {name = "valid_flashmatch",      type = "reco"    },
+]
+
+
+[[tree]] # yy reco
+name = "yy_shower_selected_interaction"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",     type = "reco" },
+    { name = "containment_cut",  type = "reco" },
+    { name = "valid_flashmatch", type = "reco" },
+    { name = "no_charged_pions",      type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "no_electrons",          type = "reco", parameters = [ "@electron_threshold" ] },
+    { name = "no_muons",              type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "no_protons",            type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "two_photons",           type = "reco", parameters = [ "@photon_threshold"   ] }, #new cut that i created by modifying single_photon cut to choose 2 instead of 1 
+]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "reco"    },
+    {name = "containment_cut",       type = "reco"    },
+    {name = "valid_flashmatch",      type = "reco"    },
+]
+
+[[tree]] # ey reco
+name = "ey_shower_selected_interaction"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",     type = "reco" },
+    { name = "containment_cut",  type = "reco" },
+    { name = "valid_flashmatch", type = "reco" },
+    { name = "no_charged_pions",      type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "no_muons",              type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "no_protons",            type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "single_electron",       type = "reco", parameters = [ "@electron_threshold" ] },
+    { name = "single_photon",         type = "reco", parameters = [ "@photon_threshold"   ] },
+]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "photon_multiplicity",   type = "both", parameters = [ "@photon_threshold"   ]},
+    {name = "electron_multiplicity", type = "both", parameters = [ "@electron_threshold" ]},
+    {name = "muon_multiplicity",     type = "both", parameters = [ "@muon_threshold"     ]},
+    {name = "pion_multiplicity",     type = "both", parameters = [ "@pion_threshold"     ]},
+    {name = "proton_multiplicity",   type = "both", parameters = [ "@proton_threshold"   ]},
+    {name = "vertex_x",              type = "both"    },
+    {name = "vertex_y",              type = "both"    },
+    {name = "vertex_z",              type = "both"    },
+    {name = "fiducial_cut",          type = "reco"    },
+    {name = "containment_cut",       type = "reco"    },
+    {name = "valid_flashmatch",      type = "reco"    },
+]
+
+#particle level variables--------------------------------------------------------------------------------------
+
+[[tree]] # ee reco 
+name = "ee_shower_selected_particle"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",          type = "reco" },
+    { name = "containment_cut",       type = "reco" },
+    { name = "valid_flashmatch",      type = "reco" },
+    { name = "no_charged_pions",      type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "no_photons",            type = "reco", parameters = [ "@photon_threshold"   ] },
+    { name = "no_muons",              type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "no_protons",            type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "two_electrons",         type = "reco", parameters = [ "@electron_threshold" ] }, #new cut that i created by modifying single_electron cut to choose 2 instead of 1 
+]
+branch = [
+    #leading electron
+    {name = "ke",                    type = "both_particle", selector = "leading_electron" },
+    {name = "csda_ke",               type = "reco_particle", selector = "leading_electron" }, 
+    {name = "mcs_ke",                type = "reco_particle", selector = "leading_electron" },
+    {name = "calo_ke",               type = "reco_particle", selector = "leading_electron" },
+    {name = "primary_classification",type = "both_particle", selector = "leading_electron" },
+    {name = "pid",                   type = "both_particle", selector = "leading_electron" },
+    {name = "start_x",               type = "both_particle", selector = "leading_electron" },
+    {name = "start_y",               type = "both_particle", selector = "leading_electron" },
+    {name = "start_z",               type = "both_particle", selector = "leading_electron" },
+    {name = "start_dir_x",           type = "both_particle", selector = "leading_electron" },
+    {name = "start_dir_y",           type = "both_particle", selector = "leading_electron" },
+    {name = "start_dir_z",           type = "both_particle", selector = "leading_electron" },
+    {name = "end_x",                 type = "both_particle", selector = "leading_electron" },
+    {name = "end_y",                 type = "both_particle", selector = "leading_electron" },
+    {name = "end_z",                 type = "both_particle", selector = "leading_electron" },
+    {name = "end_dir_x",             type = "both_particle", selector = "leading_electron" },
+    {name = "end_dir_y",             type = "both_particle", selector = "leading_electron" },
+    {name = "end_dir_z",             type = "both_particle", selector = "leading_electron" },
+    {name = "polar_angle",           type = "both_particle", selector = "leading_electron" },
+    {name = "azimuthal_angle",       type = "both_particle", selector = "leading_electron" },
+    {name = "semantic_type",         type = "both_particle", selector = "leading_electron" },
+    {name = "iou",                   type = "both_particle", selector = "leading_electron" },
+    {name = "primary_softmax",       type = "reco_particle", selector = "leading_electron" },
+    {name = "secondary_softmax",     type = "reco_particle", selector = "leading_electron" },
+    {name = "photon_softmax",        type = "reco_particle", selector = "leading_electron" },
+    {name = "electron_softmax",      type = "reco_particle", selector = "leading_electron" },
+    {name = "muon_softmax",          type = "reco_particle", selector = "leading_electron" },
+    {name = "pion_softmax",          type = "reco_particle", selector = "leading_electron" },
+    {name = "proton_softmax",        type = "reco_particle", selector = "leading_electron" },
+    {name = "theta_xw_horizontal",   type = "both_particle", selector = "leading_electron" },
+    {name = "theta_xw_p60",          type = "both_particle", selector = "leading_electron" },
+    {name = "theta_xw_m60",          type = "both_particle", selector = "leading_electron" },
+    {name = "theta_xw_vertical",     type = "both_particle", selector = "leading_electron" },
+    {name = "theta_xw_p30",          type = "both_particle", selector = "leading_electron" },
+    {name = "theta_xw_m30",          type = "both_particle", selector = "leading_electron" },
+    {name = "vertex_distance",       type = "reco_particle", selector = "leading_electron" },
+    {name = "axial_spread",          type = "reco_particle", selector = "leading_electron" },
+    {name = "directional_spread",    type = "reco_particle", selector = "leading_electron" },
+    {name = "start_dedx",            type = "reco_particle", selector = "leading_electron" },
+    {name = "dpT",                   type = "both_particle", selector = "leading_electron" },
+    #subleading electron
+    {name = "ke",                    type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "csda_ke",               type = "reco_particle", selector = "subleading_primary_gOre" }, 
+    {name = "mcs_ke",                type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "calo_ke",               type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "primary_classification",type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "pid",                   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_x",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_y",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_z",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_x",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_y",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_z",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_x",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_y",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_z",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_x",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_y",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_z",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "polar_angle",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "azimuthal_angle",       type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "semantic_type",         type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "iou",                   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "primary_softmax",       type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "secondary_softmax",     type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "photon_softmax",        type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "electron_softmax",      type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "muon_softmax",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "pion_softmax",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "proton_softmax",        type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_horizontal",   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_p60",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_m60",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_vertical",     type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_p30",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_m30",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "vertex_distance",       type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "axial_spread",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "directional_spread",    type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dedx",            type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "dpT",                   type = "both_particle", selector = "subleading_primary_gOre" },
+]
+
+[[tree]] # yy reco
+name = "yy_shower_selected_particle"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",     type = "reco" },
+    { name = "containment_cut",  type = "reco" },
+    { name = "valid_flashmatch", type = "reco" },
+    { name = "no_charged_pions",      type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "no_electrons",          type = "reco", parameters = [ "@electron_threshold" ] },
+    { name = "no_muons",              type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "no_protons",            type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "two_photons",           type = "reco", parameters = [ "@photon_threshold"   ] }, #new cut that i created by modifying single_photon cut to choose 2 instead of 1 
+]
+branch = [
+    #leading photon
+    {name = "ke",                    type = "both_particle", selector = "leading_photon" },
+    {name = "csda_ke",               type = "reco_particle", selector = "leading_photon" }, 
+    {name = "mcs_ke",                type = "reco_particle", selector = "leading_photon" },
+    {name = "calo_ke",               type = "reco_particle", selector = "leading_photon" },
+    {name = "primary_classification",type = "both_particle", selector = "leading_photon" },
+    {name = "pid",                   type = "both_particle", selector = "leading_photon" },
+    {name = "start_x",               type = "both_particle", selector = "leading_photon" },
+    {name = "start_y",               type = "both_particle", selector = "leading_photon" },
+    {name = "start_z",               type = "both_particle", selector = "leading_photon" },
+    {name = "start_dir_x",           type = "both_particle", selector = "leading_photon" },
+    {name = "start_dir_y",           type = "both_particle", selector = "leading_photon" },
+    {name = "start_dir_z",           type = "both_particle", selector = "leading_photon" },
+    {name = "end_x",                 type = "both_particle", selector = "leading_photon" },
+    {name = "end_y",                 type = "both_particle", selector = "leading_photon" },
+    {name = "end_z",                 type = "both_particle", selector = "leading_photon" },
+    {name = "end_dir_x",             type = "both_particle", selector = "leading_photon" },
+    {name = "end_dir_y",             type = "both_particle", selector = "leading_photon" },
+    {name = "end_dir_z",             type = "both_particle", selector = "leading_photon" },
+    {name = "polar_angle",           type = "both_particle", selector = "leading_photon" },
+    {name = "azimuthal_angle",       type = "both_particle", selector = "leading_photon" },
+    {name = "semantic_type",         type = "both_particle", selector = "leading_photon" },
+    {name = "iou",                   type = "both_particle", selector = "leading_photon" },
+    {name = "primary_softmax",       type = "reco_particle", selector = "leading_photon" },
+    {name = "secondary_softmax",     type = "reco_particle", selector = "leading_photon" },
+    {name = "photon_softmax",        type = "reco_particle", selector = "leading_photon" },
+    {name = "electron_softmax",      type = "reco_particle", selector = "leading_photon" },
+    {name = "muon_softmax",          type = "reco_particle", selector = "leading_photon" },
+    {name = "pion_softmax",          type = "reco_particle", selector = "leading_photon" },
+    {name = "proton_softmax",        type = "reco_particle", selector = "leading_photon" },
+    {name = "theta_xw_horizontal",   type = "both_particle", selector = "leading_photon" },
+    {name = "theta_xw_p60",          type = "both_particle", selector = "leading_photon" },
+    {name = "theta_xw_m60",          type = "both_particle", selector = "leading_photon" },
+    {name = "theta_xw_vertical",     type = "both_particle", selector = "leading_photon" },
+    {name = "theta_xw_p30",          type = "both_particle", selector = "leading_photon" },
+    {name = "theta_xw_m30",          type = "both_particle", selector = "leading_photon" },
+    {name = "vertex_distance",       type = "reco_particle", selector = "leading_photon" },
+    {name = "axial_spread",          type = "reco_particle", selector = "leading_photon" },
+    {name = "directional_spread",    type = "reco_particle", selector = "leading_photon" },
+    {name = "start_dedx",            type = "reco_particle", selector = "leading_photon" },
+    {name = "dpT",                   type = "both_particle", selector = "leading_photon" },
+    #subleading photon
+    {name = "ke",                    type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "csda_ke",               type = "reco_particle", selector = "subleading_primary_gOre" }, 
+    {name = "mcs_ke",                type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "calo_ke",               type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "primary_classification",type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "pid",                   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_x",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_y",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_z",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_x",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_y",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_z",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_x",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_y",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_z",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_x",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_y",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_z",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "polar_angle",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "azimuthal_angle",       type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "semantic_type",         type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "iou",                   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "primary_softmax",       type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "secondary_softmax",     type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "photon_softmax",        type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "electron_softmax",      type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "muon_softmax",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "pion_softmax",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "proton_softmax",        type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_horizontal",   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_p60",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_m60",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_vertical",     type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_p30",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_m30",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "vertex_distance",       type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "axial_spread",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "directional_spread",    type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dedx",            type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "dpT",                   type = "both_particle", selector = "subleading_primary_gOre" },
+]
+
+[[tree]] # ey reco
+name = "ey_shower_selected_particle"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "fiducial_cut",     type = "reco" },
+    { name = "containment_cut",  type = "reco" },
+    { name = "valid_flashmatch", type = "reco" },
+    { name = "no_charged_pions",      type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "no_muons",              type = "reco", parameters = [ "@muon_threshold"     ] },
+    { name = "no_protons",            type = "reco", parameters = [ "@pion_threshold"     ] },
+    { name = "single_electron",       type = "reco", parameters = [ "@electron_threshold" ] },
+    { name = "single_photon",         type = "reco", parameters = [ "@photon_threshold"   ] },
+]
+branch = [
+    #leading particle 
+    {name = "ke",                    type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "csda_ke",               type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "mcs_ke",                type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "calo_ke",               type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "primary_classification",type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "pid",                   type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "start_x",               type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "start_y",               type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "start_z",               type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "start_dir_x",           type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "start_dir_y",           type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "start_dir_z",           type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "end_x",                 type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "end_y",                 type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "end_z",                 type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "end_dir_x",             type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "end_dir_y",             type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "end_dir_z",             type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "polar_angle",           type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "azimuthal_angle",       type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "semantic_type",         type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "iou",                   type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "primary_softmax",       type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "secondary_softmax",     type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "photon_softmax",        type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "electron_softmax",      type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "muon_softmax",          type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "pion_softmax",          type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "proton_softmax",        type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "theta_xw_horizontal",   type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "theta_xw_p60",          type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "theta_xw_m60",          type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "theta_xw_vertical",     type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "theta_xw_p30",          type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "theta_xw_m30",          type = "both_particle", selector = "leading_primary_gOre" },
+    {name = "vertex_distance",       type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "axial_spread",          type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "directional_spread",    type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "start_dedx",            type = "reco_particle", selector = "leading_primary_gOre" },
+    {name = "dpT",                   type = "both_particle", selector = "leading_primary_gOre" },
+    #subleading particle
+    {name = "ke",                    type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "csda_ke",               type = "reco_particle", selector = "subleading_primary_gOre" }, 
+    {name = "mcs_ke",                type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "calo_ke",               type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "primary_classification",type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "pid",                   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_x",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_y",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_z",               type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_x",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_y",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dir_z",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_x",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_y",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_z",                 type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_x",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_y",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "end_dir_z",             type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "polar_angle",           type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "azimuthal_angle",       type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "semantic_type",         type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "iou",                   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "primary_softmax",       type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "secondary_softmax",     type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "photon_softmax",        type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "electron_softmax",      type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "muon_softmax",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "pion_softmax",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "proton_softmax",        type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_horizontal",   type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_p60",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_m60",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_vertical",     type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_p30",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "theta_xw_m30",          type = "both_particle", selector = "subleading_primary_gOre" },
+    {name = "vertex_distance",       type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "axial_spread",          type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "directional_spread",    type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "start_dedx",            type = "reco_particle", selector = "subleading_primary_gOre" },
+    {name = "dpT",                   type = "both_particle", selector = "subleading_primary_gOre" },
+]

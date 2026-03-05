@@ -1,0 +1,96 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/All_BNB_Paper_Signal_Selected_test"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+recopi0thresh = [
+    "@photon_threshold",
+    "@leading_photon_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 0.0
+muon_threshold = 143.425
+pi0_threshold = 0.0
+pion_threshold = 25.0
+proton_threshold = 0.0
+leading_photon_threshold = 25.0
+pi0_mass_veto_low = 60.0
+pi0_mass_veto_high = 300.0
+NuMIflash_low_t =  0.0 # µs
+NuMIflash_high_t = 9.6 # µs
+BNBflash_low_t =  0.0 # µs
+BNBflash_high_t = 1.6 # µs
+bnb_fom2_cut = 0.98
+flash_low_t = -0.5
+flash_high_t = 1.6
+
+#NuMI Samples
+
+[[sample]]
+name = "BNB_simulation"
+path = "/pnfs/icarus/persistent/users/mueller/production/simulation/nominal/input*.flat.root"
+ismc = true
+disable = false
+
+#pre-selection cuts---------------------------------------------------------------------------------------
+
+[[tree]] # Signal
+name = "BNB_pi0_Signal"
+sim_only = true
+mode = "true"
+cut = [
+    {name = "neutrino", type = "true"},
+    {name = "isnumu", type = "true"},                                                   #cut to select muon neutrino interactions
+    {name = "fiducial_cut", type = "true"}, 
+    {name = "avoid_mystery_zgap", type = "true"},                                       #cut to remove interactions occuring between -100 to 100 cm in the z-axis
+    {name = "iscc", type = "true"},                                                     #cut to select only Charged Current interactions 
+    {name = "single_muon", type = "true", parameters = ["@muon_threshold"]},
+    {name = "no_charged_pions", type = "true", parameters = ["@pion_threshold"]},
+    {name = "single_pi0", type = "true", parameters = ["@pi0_threshold"]},              #Cut to select interactions containing one neutral pion
+]
+branch = [
+    # True interaction info
+    {name = "neutrino_id", type = "true"},
+    {name = "pdg", type = "mctruth"},
+    {name = "baseline", type = "mctruth"},
+    {name = "cc", type = "mctruth"},
+    {name = "neutrino_energy", type = "mctruth"},
+    {name = "interaction_mode", type = "mctruth"},
+    {name = "interaction_type", type = "mctruth"},
+    # Interaction observables
+    {name = "visible_energy", type = "both"},
+    {name = "visible_energy_calosub", type = "both"},
+    {name = "Q2", type = "both"},
+    {name = "W", type = "both"},
+    {name = "W_calosub", type = "both"},
+    {name = "dpT", type = "both"},
+    {name = "dpL", type = "both"},
+    {name = "pn", type = "both"},
+    {name = "dphiT", type = "both"},
+    {name = "dalphaT", type = "both"},
+    {name = "vertex_x", type = "both"},
+    {name = "vertex_y", type = "both"},
+    {name = "vertex_z", type = "both"},
+    {name = "photon_multiplicity", type = "both", parameters = ["@photon_threshold"]},
+    {name = "electron_multiplicity", type = "both", parameters = ["@electron_threshold"]},
+    {name = "muon_multiplicity", type = "both", parameters = ["@muon_threshold"]},
+    {name = "pion_multiplicity", type = "both", parameters = ["@pion_threshold"]},
+    {name = "proton_multiplicity", type = "both", parameters = ["@proton_threshold"]},
+    # Neutral pion observables
+    {name = "pi0_p", type = "both"},
+    {name = "pi0_beam_costheta", type = "both"},
+    {name = "pi0_mass", type = "both"},
+    {name = "pi0_showers_costheta", type = "both"},
+    {name = "pi0_leading_shower_conv_dist", type = "both"},
+    {name = "pi0_subleading_shower_conv_dist", type = "both"},
+    {name = "pi0_p", type = "mctruth", parameters = ["@pi0_threshold"]},
+    {name = "pi0_beam_costheta", type = "mctruth", parameters = ["@pi0_threshold"]},
+]

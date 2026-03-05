@@ -1,0 +1,119 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/All_NuMI_BNB_event_level_info_2"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 25.0
+muon_threshold = 143.425
+pion_threshold = 25.0
+proton_threshold = 50.0
+NuMIflash_low_t =  0.0 # µs
+NuMIflash_high_t = 9.6 # µs
+BNBflash_low_t =  0.0 # µs
+BNBflash_high_t = 1.6 # µs
+
+#NuMI Samples
+
+[[sample]]
+name = "NuMI_simulation"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root"
+ismc = true
+disable = false
+
+#BNB samples
+
+[[sample]]
+name = "BNB_simulation"
+path = "/pnfs/icarus/persistent/users/mueller/production/simulation/nominal/input*.flat.root"
+ismc = true
+disable = false
+
+#Event level---------------------------------------------------------------------------------------
+
+[[tree]] # event level data
+name = "events_BNB"
+sim_only = false
+mode = "event"
+cut = [
+    {name = "no_cut", type = "event"},
+]
+branch = [
+    {name = "nnu", type = "event"},
+    {name = "ntrue", type = "event"},
+    {name = "nreco", type = "event"},
+    {name = "pot", type = "event"},
+    {name = "nintime", type = "event", parameters = [0.0, 1.6]},
+]
+
+[[tree]] # event level data
+name = "events_NuMI"
+sim_only = false
+mode = "event"
+cut = [
+    {name = "no_cut", type = "event"},
+]
+branch = [
+    {name = "nnu", type = "event"},
+    {name = "ntrue", type = "event"},
+    {name = "nreco", type = "event"},
+    {name = "pot", type = "event"},
+    {name = "nintime", type = "event", parameters = [0.0, 9.6]},
+]
+
+
+#Interaction level---------------------------------------------------------------------------------------
+
+[[tree]] # reco no cuts
+name = "reco_nocut"
+sim_only = false
+mode = "reco"
+cut = [
+    { name = "no_cut",          type = "reco" },
+]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    { name = "cc",               type = "mctruth" },
+    { name = "pdg",              type = "mctruth" },
+    { name = "interaction_mode", type = "mctruth" },
+    { name = "interaction_type", type = "mctruth" },
+    { name = "neutrino_energy",  type = "mctruth" },
+    { name = "neutrino_id",   type = "true" },
+    { name = "neutrino",   type = "true" },
+    { name = "cosmic",   type = "true" },
+]
+
+[[tree]] # true no cuts
+name = "true_nocut"
+sim_only = true
+mode = "true"
+cut = [
+    { name = "no_cut",          type = "true" },
+]
+branch = [
+    #Multiplicity tests and interaction level
+    {name = "fiducial_cut",          type = "both"    },
+    {name = "containment_cut",       type = "both"    },
+    {name = "valid_flashmatch",      type = "both"    },
+    { name = "cc",               type = "mctruth" },
+    { name = "pdg",              type = "mctruth" },
+    { name = "interaction_mode", type = "mctruth" },
+    { name = "interaction_type", type = "mctruth" },
+    { name = "neutrino_energy",  type = "mctruth" },
+    { name = "neutrino_id",   type = "true" },
+    { name = "neutrino",   type = "true" },
+    { name = "cosmic",   type = "true" },
+]
+
+
