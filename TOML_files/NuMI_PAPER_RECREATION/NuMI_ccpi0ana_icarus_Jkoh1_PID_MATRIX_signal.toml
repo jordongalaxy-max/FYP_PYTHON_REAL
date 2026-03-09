@@ -1,0 +1,73 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/NuMI_ccpi0ana_icarus_Jkoh1_PID_MATRIX_signal"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+recopi0thresh = [
+    "@photon_threshold",
+    "@leading_photon_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 0.0
+muon_threshold = 143.425
+pi0_threshold = 0.0
+pion_threshold = 25.0
+proton_threshold = 0.0
+leading_photon_threshold = 25.0
+pi0_mass_veto_low = 60.0
+pi0_mass_veto_high = 300.0
+flash_low_t = -0.5
+flash_high_t = 1.6
+bnb_fom2_cut = 0.98
+
+[[sample]]
+name = "NuMI_simulation"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root"
+ismc = true
+disable = false
+
+
+[[tree]]
+name = "signal"
+sim_only = true
+add_exposure = true
+mode = "true"
+cut = [
+    {name = "neutrino", type = "true"},
+    {name = "isnumu", type = "true"},
+    {name = "fiducial_cut", type = "true"},
+    {name = "avoid_mystery_zgap", type = "true"},
+    {name = "iscc", type = "true"},
+    {name = "single_muon", type = "true", parameters = ["@muon_threshold"]},
+    {name = "no_charged_pions", type = "true", parameters = ["@pion_threshold"]},
+    {name = "single_pi0", type = "true", parameters = ["@pi0_threshold"]},
+]
+branch = [
+    {name = "primary_classification", type = "both_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "iou", type = "both_particle"},
+    {name = "primary_softmax", type = "reco_particle"},
+    {name = "secondary_softmax", type = "reco_particle"},
+    {name = "photon_softmax", type = "reco_particle"},
+    {name = "electron_softmax", type = "reco_particle"},
+    {name = "muon_softmax", type = "reco_particle"},
+    {name = "pion_softmax", type = "reco_particle"},
+    {name = "proton_softmax", type = "reco_particle"},
+    {name = "ke", type = "both_particle"},
+    {name = "energy", type = "both_particle"},
+    {name = "length", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+]
