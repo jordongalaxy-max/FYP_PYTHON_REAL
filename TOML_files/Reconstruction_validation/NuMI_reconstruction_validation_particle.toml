@@ -1,0 +1,64 @@
+[general]
+output = "/exp/icarus/data/users/jkoh1/NuMI_reconstruction_validation_particle"
+primfn = "default_primary_classification"
+pidfn = "default_pid"
+
+fsthresh = [
+    "@photon_threshold",
+    "@electron_threshold",
+    "@muon_threshold",
+    "@pion_threshold",
+    "@proton_threshold",
+]
+
+recopi0thresh = [
+    "@photon_threshold",
+    "@leading_photon_threshold",
+]
+
+[parameters]
+photon_threshold = 25.0
+electron_threshold = 0.0
+muon_threshold = 143.425
+pi0_threshold = 0.0
+pion_threshold = 25.0
+proton_threshold = 0.0
+leading_photon_threshold = 25.0
+pi0_mass_veto_low = 60.0
+pi0_mass_veto_high = 300.0
+flash_low_t = 0.0
+flash_high_t = 9.6
+bnb_fom2_cut = 0.98
+
+#NuMI Samples
+
+[[sample]]
+name = "NuMI_simulation"
+path = "/pnfs/icarus/persistent/users/dcarber/spine/combined_files/NuMI_CV_flat_cafs_2/*.root"
+ismc = true
+disable = false
+
+[[tree]] # Particle level data
+name = "particle_level"
+sim_only = true
+add_exposure = true
+mode = "reco"
+cut = [
+    {name = "no_cut",          type = "reco" },
+]
+branch = [
+    {name = "length", type = "both_particle"},
+    {name = "ke", type = "both_particle"},
+    {name = "csda_ke", type = "reco_particle"},
+    {name = "mcs_ke", type = "reco_particle"},
+    {name = "calo_ke", type = "reco_particle"},
+    {name = "pid", type = "both_particle"},
+    {name = "start_x", type = "both_particle"},
+    {name = "start_y", type = "both_particle"},
+    {name = "start_z", type = "both_particle"},
+    {name = "start_dir_x", type = "both_particle"},
+    {name = "start_dir_y", type = "both_particle"},
+    {name = "start_dir_z", type = "both_particle"},
+    {name = "semantic_type", type = "both_particle"},
+    {name = "p", type = "both_particle"},
+]
